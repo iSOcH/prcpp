@@ -124,9 +124,13 @@ String String::subString(size_t begin, size_t end) const {
 	if (begin >= end || begin >= m_len) {
 		return String();
 	} else {
-		if (end > m_len) {
-			end = m_len;
-		}
+
+		// fix too long end (might give unexpected behaviour
+		// and if this string already is a substring, it might
+		// show parts of the original string which shouldnt
+		// be in this substring
+		if (end > m_len) end = m_len;
+
 		String* retStr = new String();
 		retStr->m_start = begin;
 		retStr->m_len = end-begin;
