@@ -1,0 +1,1 @@
+g++ -fPIC --shared -o test.so -I"/usr/lib/jvm/java-6-sun/include" -I"/usr/lib/jvm/java-6-sun/include/linux" Test.cpp /usr/lib/jvm/java-6-sun/jre/lib/amd64/server/libjvm.so
