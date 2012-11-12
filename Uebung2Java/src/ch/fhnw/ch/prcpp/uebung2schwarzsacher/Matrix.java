@@ -33,7 +33,6 @@ public class Matrix {
 		assert height>0 && width>0;
 		this.rows = height;
 		this.cols = width;
-		
 		matrix = data;
 	}
 
@@ -70,7 +69,7 @@ public class Matrix {
 		return matrix[pos];
 	}
 	
-	boolean equals(Matrix other) {
+	public boolean equals(Matrix other) {
 		for (int i=0; i<cols*rows; i++) {
 			if (matrix[i] != other.getElement(i)) return false;
 		}
@@ -133,9 +132,9 @@ public class Matrix {
 			int heightA, int widthA, int widthB);
 	
 	public static void main(String[] args) {
+		// example from http://de.wikipedia.org/wiki/Matrix_%28Mathematik%29#Matrizenmultiplikation
 		Matrix a = new Matrix(2, 3, new double[]{1,2,3,4,5,6});
 		Matrix b = new Matrix(3, 2, new double[]{6,-1,3,2,0,-3});
-		
 		Matrix r = a.multiply(b);
 		r.print();
 	}
