@@ -92,7 +92,7 @@ public class Matrix {
 	 */
 	public Matrix multiply(Matrix b) {
 		assert rows == b.getWidth();
-		double[] result = prepareMultiplication(rows, cols, b.getWidth());
+		double[] result = prepareMultiplication(rows, b.getWidth());
 		final int rH = rows;
 		final int rW = b.getWidth();
 		
@@ -109,7 +109,7 @@ public class Matrix {
 	
 	public Matrix multiplyNative(Matrix b) {
 		assert rows == b.getWidth();
-		double[] result = prepareMultiplication(rows, cols, b.getWidth());
+		double[] result = prepareMultiplication(rows, b.getWidth());
 		multiplyC(matrix, b.getData(), result, rows, cols, b.getWidth());
 		return new Matrix(rows, b.getWidth(), result);
 	}
@@ -123,7 +123,7 @@ public class Matrix {
 		}
 	}
 	
-	private double[] prepareMultiplication(int heightA, int widthA, int widthB) {
+	private double[] prepareMultiplication(int heightA, int widthB) {
 		return new double[heightA*widthB];
 	}
 	
