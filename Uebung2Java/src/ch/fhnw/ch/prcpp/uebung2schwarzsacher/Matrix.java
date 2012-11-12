@@ -96,8 +96,8 @@ public class Matrix {
 		final int rH = rows;
 		final int rW = b.getWidth();
 		
-		for (int row=0; row<rW; row++) { // row in result
-			for (int col=0; col<rH; col++) { // col in result
+		for (int row=0; row<rH; row++) { // row in result
+			for (int col=0; col<rW; col++) { // col in result
 				for (int k=0; k<cols; k++) {
 					result[row*rW + col] += matrix[row*cols + k] * b.getData()[k*rW + col];
 				}
@@ -117,8 +117,7 @@ public class Matrix {
 	public void print() {
 		for (int row=0; row<rows; row++) {
 			for (int col=0; col<cols; col++) {
-				System.out.print(matrix[row*cols + col]);
-				System.out.print('\t');
+				System.out.printf("%.1f\t", matrix[row*cols + col]);
 			}
 			System.out.print('\n');
 		}
@@ -132,10 +131,15 @@ public class Matrix {
 			int heightA, int widthA, int widthB);
 	
 	public static void main(String[] args) {
-		// example from http://de.wikipedia.org/wiki/Matrix_%28Mathematik%29#Matrizenmultiplikation
-		Matrix a = new Matrix(2, 3, new double[]{1,2,3,4,5,6});
-		Matrix b = new Matrix(3, 2, new double[]{6,-1,3,2,0,-3});
-		Matrix r = a.multiply(b);
+//		// example from http://de.wikipedia.org/wiki/Matrix_%28Mathematik%29#Matrizenmultiplikation
+//		Matrix a = new Matrix(2, 3, new double[]{1,2,3,4,5,6});
+//		Matrix b = new Matrix(3, 2, new double[]{6,-1,3,2,0,-3});
+//		Matrix r = a.multiply(b);
+//		r.print();
+		
+		Matrix c = new Matrix(100, 200);
+		Matrix d = new Matrix(200, 300);
+		Matrix r = c.multiply(d);
 		r.print();
 	}
 }
