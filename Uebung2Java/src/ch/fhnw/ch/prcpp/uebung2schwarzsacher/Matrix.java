@@ -19,7 +19,7 @@ public class Matrix {
 	public Matrix(int height, int width) {
 		createMatrix(height, width);
 		
-		Random dice = new Random(56874534184132L); // typed furiously, guaranteed to be random ;)
+		Random dice = new Random(56874534184132L); // typed furiously, guaranteed to be random ;) --öh,was secher ned! :D
 		for (int i=0; i<cols*rows; i++) {
 			matrix[i] = dice.nextDouble();
 		}
@@ -112,12 +112,27 @@ public class Matrix {
 		
 		return new Matrix(rows, b.getWidth(), result);
 	}
-	
+
+	public Matrix power(int k) {
+		Matrix result = new Matrix(rows,cols);	
+		for (int i=0; i<k; i++) { 
+				result = this.multiply(this);
+		}
+		
+		return result; 
+	}
+
 	public Matrix multiplyNative(Matrix b) {
 		assert rows == b.getWidth();
 		double[] result = prepareMultiplication(rows, b.getWidth());
 		multiplyC(matrix, b.getData(), result, rows, cols, b.getWidth());
 		return new Matrix(rows, b.getWidth(), result);
+	}
+
+	public Matrix powerNative(int k){
+		double[] result = prepareMultiplication(rows, cols);
+		powerC(matrix, result,k, rows, cols);
+		return new Matrix(rows,cols,result);
 	}
 	
 	public void print() {
@@ -135,7 +150,9 @@ public class Matrix {
 	
 	private native void multiplyC(double[] matrixA, double[] matrixB, double[] result,
 			int heightA, int widthA, int widthB);
-	
+
+	private native void powerC(double[] matrixA, double[] result,int k, int height, int width);
+
 	public static void main(String[] args) {
 		// example from http://de.wikipedia.org/wiki/Matrix_%28Mathematik%29#Matrizenmultiplikation
 //		Matrix a = new Matrix(2, 3, new double[]{1,2,3,4,5,6});
@@ -148,13 +165,25 @@ public class Matrix {
 		
 		Matrix c = new Matrix(400, 6000);
 		Matrix d = new Matrix(6000, 300);
-		
+		Matrix p = new Matrix(200,200);
+	
+			
+		System.out.println("matrix multiplication: ");
 		long startJ = System.currentTimeMillis();
 		Matrix rJ = c.multiply(d);
 		System.out.println("java took " + (System.currentTimeMillis()-startJ) + "ms");
 		
-		long startC = System.currentTimeMillis();
+	//	long startC = System.currentTimeMillis();
 		Matrix rC = c.multiplyNative(d);
-		System.out.println("c++ took " + (System.currentTimeMillis()-startC) + "ms");
+	//	System.out.println("c++ took " + (System.currentTimeMillis()-startC) + "ms");
+
+
+		System.out.println("matrix power: ");
+		long startP = System.currentTimeMillis();
+		Matrix rP = p.power(51);
+		System.out.println("java took " + (System.currentTimeMillis()-startP) + "ms");
+		
+		Matrix rQ = p.powerNative(51);
+
 	}
 }
