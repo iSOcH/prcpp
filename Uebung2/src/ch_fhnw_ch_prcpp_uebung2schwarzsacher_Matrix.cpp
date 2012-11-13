@@ -99,7 +99,7 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 
 
 	for ( int i = 0; i < k; i++ ) {
-		matrix_multiply(m,m,r,rows,cols,cols);
+		matrix_multiply(r,m,r,rows,cols,cols);
 	}
 	
 	//stop the timer
