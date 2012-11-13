@@ -20,7 +20,9 @@
 
 #include "ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix.h"
 
-JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_multiplyC{
-
+JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_multiplyC(JNIEnv * env,
+		jobject caller, jdoubleArray matA, jdoubleArray matB, jdoubleArray matR, jint heightA,
+		jint widthA , jint widthB) {
+	// syntax error?
 }
 
