@@ -116,7 +116,7 @@ public class Matrix {
 	public Matrix power(int k) {
 		Matrix result = new Matrix(rows,cols);	
 		for (int i=0; i<k; i++) { 
-				result = this.multiply(this);
+				result = result.multiply(this);
 		}
 		
 		return result; 
