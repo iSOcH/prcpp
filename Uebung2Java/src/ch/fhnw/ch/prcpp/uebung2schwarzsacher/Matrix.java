@@ -3,6 +3,10 @@ package ch.fhnw.ch.prcpp.uebung2schwarzsacher;
 import java.util.Random;
 
 public class Matrix {
+	static {
+		System.loadLibrary("Uebung2");
+	}
+	
 	private int rows, cols;
 
 	/**
@@ -69,9 +73,11 @@ public class Matrix {
 		return matrix[pos];
 	}
 	
-	public boolean equals(Matrix other) {
+	@Override
+	public boolean equals(Object other) {
+		Matrix otherMatrix = (Matrix) other;
 		for (int i=0; i<cols*rows; i++) {
-			if (matrix[i] != other.getElement(i)) return false;
+			if (matrix[i] != otherMatrix.getElement(i)) return false;
 		}
 		return true;
 	}
@@ -131,15 +137,24 @@ public class Matrix {
 			int heightA, int widthA, int widthB);
 	
 	public static void main(String[] args) {
-//		// example from http://de.wikipedia.org/wiki/Matrix_%28Mathematik%29#Matrizenmultiplikation
+		// example from http://de.wikipedia.org/wiki/Matrix_%28Mathematik%29#Matrizenmultiplikation
 //		Matrix a = new Matrix(2, 3, new double[]{1,2,3,4,5,6});
 //		Matrix b = new Matrix(3, 2, new double[]{6,-1,3,2,0,-3});
-//		Matrix r = a.multiply(b);
-//		r.print();
+//		Matrix rJ = a.multiply(b);
+//		Matrix rC = a.multiplyNative(b);
+//		rJ.print();
+//		System.out.println();
+//		rC.print();
 		
-		Matrix c = new Matrix(100, 200);
-		Matrix d = new Matrix(200, 300);
-		Matrix r = c.multiply(d);
-		r.print();
+		Matrix c = new Matrix(400, 6000);
+		Matrix d = new Matrix(6000, 300);
+		
+		long startJ = System.currentTimeMillis();
+		Matrix rJ = c.multiply(d);
+		System.out.println("java took " + (System.currentTimeMillis()-startJ) + "ms");
+		
+		long startC = System.currentTimeMillis();
+		Matrix rC = c.multiplyNative(d);
+		System.out.println("c++ took " + (System.currentTimeMillis()-startC) + "ms");
 	}
 }
