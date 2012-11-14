@@ -98,10 +98,31 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 	start = clock();
 
 
-	for ( int i = 0; i < k; i++ ) {
-		matrix_multiply(r,m,r,rows,cols,cols);
+	switch (k) {
+		case 0:
+			// Einheitsmatrix retournieren?
+			for (int i=0; i<rows; i++) {
+				r[i*cols + i] = 1.0;
+			}
+			break;
+		case 1:
+			for (int i=0; i<rows*cols; i++) {
+				r[i] = m[i];
+			}
+			break;
+		default:
+			// k>=2
+			matrix_multiply(m,m,r,rows,cols,cols);
+			if (k>2) {
+				for (int i=2; i<k; i++) {
+					// FIXME: i dont think produces the correct result
+					// because matrix_multiply expects r to be a 0-matrix
+					matrix_multiply(r,m,r,rows,cols,cols);
+				}
+			}
+			break;
 	}
-	
+
 	//stop the timer
 	stop = clock();
 	t = (double) (stop-start)/CLOCKS_PER_SEC;
