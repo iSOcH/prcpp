@@ -21,6 +21,7 @@
 #include "ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix.h"
 #include <time.h>
 #include <stdio.h>
+#include <cstring>
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -35,6 +36,7 @@ void matrix_multiply(
 	const int rW = widthB;
 	for (int row=0; row<rH; row++) { // row in result
 		for (int col=0; col<rW; col++) { // col in results
+			r[row*rW + col] = 0; // make sure result is 0 before we begin
 			for (int k=0; k<widthA; k++) {
 				r[row*rW + col] += a[row*widthA + k] * b[k*widthB + col];
 			}
@@ -108,11 +110,32 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 			// k>=2
 			matrix_multiply(m,m,r,rows,cols,cols);
 			if (k>2) {
+				jdouble * tmp = new jdouble[rows*cols];
 				for (int i=2; i<k; i++) {
-					// FIXME: i dont think produces the correct result
-					// because matrix_multiply expects r to be a 0-matrix
-					matrix_multiply(r,m,r,rows,cols,cols);
+					matrix_multiply(r, m, tmp, rows, cols, cols);
+
+					// swap for next iteration
+					jdouble * tmpPointer = r;
+					r = tmp;
+					tmp = tmpPointer;
 				}
+
+				if (k%2!=0) {
+					// k%!=0 means the actual result is in the
+					// location tmp initially pointed to, not in r
+
+					// make our r point to the array our caller thinks
+					// it is pointing to
+					jdouble * tmpPointer = r;
+					r = tmp;
+					tmp = tmpPointer;
+
+					// TODO: is this sentence correct?
+					// as we cant change the pointers outside of this scope,
+					// we have to copy the contents of tmp to r
+					memcpy(r, tmp, sizeof(jdouble) * rows * cols);
+				}
+				delete[] tmp;
 			}
 			break;
 	}

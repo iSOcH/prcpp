@@ -1,5 +1,6 @@
 package ch.fhnw.ch.prcpp.uebung2schwarzsacher;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Matrix {
@@ -73,15 +74,6 @@ public class Matrix {
 		return matrix[pos];
 	}
 	
-	@Override
-	public boolean equals(Object other) {
-		Matrix otherMatrix = (Matrix) other;
-		for (int i=0; i<cols*rows; i++) {
-			if (matrix[i] != otherMatrix.getElement(i)) return false;
-		}
-		return true;
-	}
-	
 	public int getWidth() {
 		return cols;
 	}
@@ -114,6 +106,7 @@ public class Matrix {
 	}
 
 	public Matrix power(int k) {
+		assert rows == cols;
 		Matrix result = new Matrix(rows, cols, 0);
 		
 		switch (k) {
@@ -148,7 +141,8 @@ public class Matrix {
 		return new Matrix(rows, b.getWidth(), result);
 	}
 
-	public Matrix powerNative(int k){
+	public Matrix powerNative(int k) {
+		assert rows == cols;
 		double[] result = prepareMultiplication(rows, cols);
 		powerC(matrix, result,k, rows, cols);
 		return new Matrix(rows,cols,result);
@@ -172,6 +166,34 @@ public class Matrix {
 
 	private native void powerC(double[] matrixA, double[] result,int k, int height, int width);
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + cols;
+		result = prime * result + Arrays.hashCode(matrix);
+		result = prime * result + rows;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Matrix other = (Matrix) obj;
+		if (cols != other.cols)
+			return false;
+		if (!Arrays.equals(matrix, other.matrix))
+			return false;
+		if (rows != other.rows)
+			return false;
+		return true;
+	}
+
 	public static void main(String[] args) {
 		// example from http://de.wikipedia.org/wiki/Matrix_%28Mathematik%29#Matrizenmultiplikation
 //		Matrix a = new Matrix(2, 3, new double[]{1,2,3,4,5,6});
@@ -182,26 +204,29 @@ public class Matrix {
 //		System.out.println();
 //		rC.print();
 		
-//		Matrix c = new Matrix(400, 6000);
-//		Matrix d = new Matrix(6000, 300);
-//		Matrix p = new Matrix(200,200);
-//				
-//		System.out.println("matrix multiplication: ");
-//		long startJ = System.currentTimeMillis();
-//		Matrix rJ = c.multiply(d);
-//		System.out.println("java took " + (System.currentTimeMillis()-startJ) + "ms");
-//		Matrix rC = c.multiplyNative(d);
-//
-//		System.out.println("matrix power: ");
-//		long startP = System.currentTimeMillis();
-//		Matrix rP = p.power(51);
-//		System.out.println("java took " + (System.currentTimeMillis()-startP) + "ms");
-//		Matrix rQ = p.powerNative(51);
+		Matrix c = new Matrix(400, 6000);
+		Matrix d = new Matrix(6000, 300);
+		Matrix p = new Matrix(200,200);
+				
+		System.out.println("matrix multiplication: ");
+		long startJ = System.currentTimeMillis();
+		Matrix rJ = c.multiply(d);
+		System.out.println("java took " + (System.currentTimeMillis()-startJ) + "ms");
+		Matrix rC = c.multiplyNative(d);
 
-		Matrix a1234 = new Matrix(2, 2, new double[]{1,2,3,4});
-		for (int i=0; i<=3; i++) {
-			a1234.power(i).print();
-			System.out.println();
-		}
+		System.out.println("matrix power: ");
+		long startP = System.currentTimeMillis();
+		Matrix rP = p.power(51);
+		System.out.println("java took " + (System.currentTimeMillis()-startP) + "ms");
+		Matrix rQ = p.powerNative(51);
+		
+//		Matrix a1234 = new Matrix(2, 2, new double[]{1,2,3,4});
+//		for (int i=0; i<=4; i++) {
+//			System.out.println();
+//			Matrix resultJ = a1234.power(i);
+//			resultJ.print();
+//			System.out.println("java power and c++ power equal? " + a1234.powerNative(i).equals(resultJ));
+//			System.out.println();
+//		}
 	}
 }
