@@ -114,7 +114,7 @@ public class Matrix {
 	}
 
 	public Matrix power(int k) {
-		Matrix result = new Matrix(rows,cols);
+		Matrix result = new Matrix(rows, cols, 0);
 		
 		switch (k) {
 		case 0:
@@ -182,27 +182,26 @@ public class Matrix {
 //		System.out.println();
 //		rC.print();
 		
-		Matrix c = new Matrix(400, 6000);
-		Matrix d = new Matrix(6000, 300);
-		Matrix p = new Matrix(200,200);
-	
-			
-		System.out.println("matrix multiplication: ");
-		long startJ = System.currentTimeMillis();
-		Matrix rJ = c.multiply(d);
-		System.out.println("java took " + (System.currentTimeMillis()-startJ) + "ms");
-		
-	//	long startC = System.currentTimeMillis();
-		Matrix rC = c.multiplyNative(d);
-	//	System.out.println("c++ took " + (System.currentTimeMillis()-startC) + "ms");
+//		Matrix c = new Matrix(400, 6000);
+//		Matrix d = new Matrix(6000, 300);
+//		Matrix p = new Matrix(200,200);
+//				
+//		System.out.println("matrix multiplication: ");
+//		long startJ = System.currentTimeMillis();
+//		Matrix rJ = c.multiply(d);
+//		System.out.println("java took " + (System.currentTimeMillis()-startJ) + "ms");
+//		Matrix rC = c.multiplyNative(d);
+//
+//		System.out.println("matrix power: ");
+//		long startP = System.currentTimeMillis();
+//		Matrix rP = p.power(51);
+//		System.out.println("java took " + (System.currentTimeMillis()-startP) + "ms");
+//		Matrix rQ = p.powerNative(51);
 
-
-		System.out.println("matrix power: ");
-		long startP = System.currentTimeMillis();
-		Matrix rP = p.power(51);
-		System.out.println("java took " + (System.currentTimeMillis()-startP) + "ms");
-		
-		Matrix rQ = p.powerNative(51);
-
+		Matrix a1234 = new Matrix(2, 2, new double[]{1,2,3,4});
+		for (int i=0; i<=3; i++) {
+			a1234.power(i).print();
+			System.out.println();
+		}
 	}
 }
