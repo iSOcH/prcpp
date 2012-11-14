@@ -114,9 +114,28 @@ public class Matrix {
 	}
 
 	public Matrix power(int k) {
-		Matrix result = new Matrix(rows,cols);	
-		for (int i=0; i<k; i++) { 
+		Matrix result = new Matrix(rows,cols);
+		
+		switch (k) {
+		case 0:
+			// Einheitsmatrix retournieren?
+			for (int i=0; i<rows; i++) {
+				result.getData()[i*rows + i] = 1.0;
+			}
+			break;
+		case 1:
+			for (int i=0; i<rows*cols; i++) {
+				result.getData()[i] = matrix[i];
+			}
+			break;
+		default:
+			// k>=2
+			result = this.multiply(this);
+			for (int i=2; i<k; i++) {
+				// this always creates a new Matrix and array, performance...
 				result = result.multiply(this);
+			}
+			break;
 		}
 		
 		return result; 
