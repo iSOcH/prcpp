@@ -28,8 +28,9 @@
  *  Description:  
  * =====================================================================================
  */
-void	matrix_multiply ( jdouble * a, jdouble * b, jdouble * r,  jint heightA, jint widthA, jint widthB )
-{
+void matrix_multiply(
+		jdouble * a, jdouble * b, jdouble * r,
+		jint heightA, jint widthA, jint widthB) {
 	const int rH = heightA;
 	const int rW = widthB;
 	for (int row=0; row<rH; row++) { // row in result
@@ -40,9 +41,6 @@ void	matrix_multiply ( jdouble * a, jdouble * b, jdouble * r,  jint heightA, jin
 		}
 	}
 }		/* -----  end of function matrix_multiply  ----- */
-
-
-
 
 JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_multiplyC(
 		JNIEnv * env,
@@ -71,32 +69,28 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_multipl
 	t = (double) (stop-start)/CLOCKS_PER_SEC;
 	printf("c++ took: %1.0fms\n", 1000*t);
 
-	// mode 0: copy back and free elems-buffer (here: r)
-	env->ReleaseDoubleArrayElements(matA, a, 0);
+	// mode 0: copy back and free elems-buffer
+	// mode JNI_ABORT: free buffer, dont copy back
+	env->ReleaseDoubleArrayElements(matA, a, JNI_ABORT);
 	env->ReleaseDoubleArrayElements(matB, b, JNI_ABORT);
-	env->ReleaseDoubleArrayElements(matR, r, JNI_ABORT);
+	env->ReleaseDoubleArrayElements(matR, r, 0);
 }
+
 JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
-		JNIEnv * env,
-		jobject caller, 
-		jdoubleArray matM, 
-		jdoubleArray matR, 
-		jint k, 
-		jint rows, 
-		jint cols){
+		JNIEnv * env, jobject caller,
+		jdoubleArray matM, jdoubleArray matR,
+		jint k, jint rows, jint cols) {
 
 	jboolean jfalse = false;
 	jdouble * m, * r;
 	m = env->GetDoubleArrayElements(matM, &jfalse);
 	r = env->GetDoubleArrayElements(matR, &jfalse);
 
-
 	//initialize stopwatch
 	clock_t start, stop;
 	double t = 0.0;
 	//start the timer
 	start = clock();
-
 
 	switch (k) {
 		case 0:
@@ -128,9 +122,10 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 	t = (double) (stop-start)/CLOCKS_PER_SEC;
 	printf("c++ took: %1.0fms\n", 1000*t);
 
-	// mode 0: copy back and free elems-buffer (here: r)
-	env->ReleaseDoubleArrayElements(matM, m, 0);
-	env->ReleaseDoubleArrayElements(matR, r, JNI_ABORT);
+	// mode 0: copy back and free elems-buffer
+	// mode JNI_ABORT: free buffer, dont copy back
+	env->ReleaseDoubleArrayElements(matM, m, JNI_ABORT);
+	env->ReleaseDoubleArrayElements(matR, r, 0);
 }
 
 
