@@ -124,7 +124,7 @@ public class Matrix {
 			// k>=2
 			result = this.multiply(this);
 			for (int i=2; i<k; i++) {
-				// this always creates a new Matrix and array, performance...
+				// this always creates a new Matrix and array, not really optimized
 				result = result.multiply(this);
 			}
 			break;

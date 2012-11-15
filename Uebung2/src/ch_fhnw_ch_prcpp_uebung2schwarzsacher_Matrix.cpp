@@ -120,7 +120,7 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 				}
 
 				if (k%2!=0) {
-					// k%!=0 means the actual result is in the
+					// k%2!=0 means the actual result is in the
 					// location tmp initially pointed to, not in r
 
 					// make our r point to the array our caller thinks
