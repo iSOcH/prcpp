@@ -129,7 +129,6 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 					r = tmp;
 					tmp = tmpPointer;
 
-					// TODO: is this sentence correct?
 					// as we cant change the pointers outside of this scope,
 					// we have to copy the contents of tmp to r
 					memcpy(r, tmp, sizeof(jdouble) * rows * rows);
