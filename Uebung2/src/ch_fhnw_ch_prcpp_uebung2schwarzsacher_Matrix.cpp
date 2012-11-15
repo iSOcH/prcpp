@@ -81,7 +81,7 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_multipl
 JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 		JNIEnv * env, jobject caller,
 		jdoubleArray matM, jdoubleArray matR,
-		jint k, jint rows, jint cols) {
+		jint k, jint rows) {
 
 	jboolean jfalse = false;
 	jdouble * m, * r;
@@ -96,23 +96,22 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 
 	switch (k) {
 		case 0:
-			// Einheitsmatrix retournieren?
 			for (int i=0; i<rows; i++) {
-				r[i*cols + i] = 1.0;
+				r[i*rows + i] = 1.0;
 			}
 			break;
 		case 1:
-			for (int i=0; i<rows*cols; i++) {
+			for (int i=0; i<rows*rows; i++) {
 				r[i] = m[i];
 			}
 			break;
 		default:
 			// k>=2
-			matrix_multiply(m,m,r,rows,cols,cols);
+			matrix_multiply(m, m, r, rows, rows, rows);
 			if (k>2) {
-				jdouble * tmp = new jdouble[rows*cols];
+				jdouble * tmp = new jdouble[rows*rows];
 				for (int i=2; i<k; i++) {
-					matrix_multiply(r, m, tmp, rows, cols, cols);
+					matrix_multiply(r, m, tmp, rows, rows, rows);
 
 					// swap for next iteration
 					jdouble * tmpPointer = r;
@@ -133,7 +132,7 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC(
 					// TODO: is this sentence correct?
 					// as we cant change the pointers outside of this scope,
 					// we have to copy the contents of tmp to r
-					memcpy(r, tmp, sizeof(jdouble) * rows * cols);
+					memcpy(r, tmp, sizeof(jdouble) * rows * rows);
 				}
 				delete[] tmp;
 			}

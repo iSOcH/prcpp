@@ -21,7 +21,7 @@ JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_multipl
  * Signature: ([D[DIII)V
  */
 JNIEXPORT void JNICALL Java_ch_fhnw_ch_prcpp_uebung2schwarzsacher_Matrix_powerC
-  (JNIEnv *, jobject, jdoubleArray, jdoubleArray, jint, jint, jint);
+  (JNIEnv *, jobject, jdoubleArray, jdoubleArray, jint, jint);
 
 #ifdef __cplusplus
 }

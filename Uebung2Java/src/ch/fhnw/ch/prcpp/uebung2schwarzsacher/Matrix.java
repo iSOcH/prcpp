@@ -111,7 +111,6 @@ public class Matrix {
 		
 		switch (k) {
 		case 0:
-			// Einheitsmatrix retournieren?
 			for (int i=0; i<rows; i++) {
 				result.getData()[i*rows + i] = 1.0;
 			}
@@ -144,7 +143,7 @@ public class Matrix {
 	public Matrix powerNative(int k) {
 		assert rows == cols;
 		double[] result = prepareMultiplication(rows, cols);
-		powerC(matrix, result,k, rows, cols);
+		powerC(matrix, result,k, rows);
 		return new Matrix(rows,cols,result);
 	}
 	
@@ -164,7 +163,7 @@ public class Matrix {
 	private native void multiplyC(double[] matrixA, double[] matrixB, double[] result,
 			int heightA, int widthA, int widthB);
 
-	private native void powerC(double[] matrixA, double[] result,int k, int height, int width);
+	private native void powerC(double[] matrixA, double[] result, int k, int height);
 
 	@Override
 	public int hashCode() {
