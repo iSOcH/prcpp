@@ -1,3 +1,5 @@
+A1:
+----------------------------------------------------------------------
 // the node in the parse tree.
 template <typename Left, typename Op, typename Right, typename T>
 struct X
@@ -43,6 +45,17 @@ struct Array
 		cout << ’]’ << endl;
 	}
 };
+
+
+template <typename Left, typename T>
+X<Left, Plus<T>, Array<T>, T> operator+( Left a, Array<T> b)
+{
+	return X<Left, Plus<T>, Array<T>, T>(a,b);
+}
+
+
+
+
 int main()
 {
 	double a_data[] = { 2, 3, 5, 9 };
@@ -60,4 +73,41 @@ int main()
 
 	D = A - B - C;
 	D.print();
+}
+
+
+A2:
+----------------------------------------------------------------------
+int main()
+{
+	double a_data[] = { 2, 3, 5, 9 };
+	double b_data[] = { 1, 0, 0, 1 };
+	double c_data[] = { 3, 0, 2, 5 };
+	double d_data[4];
+
+	Array<double> A(a_data,4);
+	Array<double> B(b_data,4);
+	Array<double> C(c_data,4);
+	Array<double> D(d_data,4);
+
+	D = k*A + B + l*C;
+	D.print();
+}
+
+
+
+A3:
+----------------------------------------------------------------------
+
+int main()
+{
+	double a_data[] = { 2, 3, 5, 9 };
+	double b_data[] = { 1, 0, 0, 1 };
+
+	Array<double> A(a_data,4);
+	Array<double> B(b_data,4);
+
+	D = A**C;
+	D.print();
+
 }
