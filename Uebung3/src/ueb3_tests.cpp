@@ -43,8 +43,8 @@ void second() {
 	C = k*A;
 	D = l*B;
 	D = C+D;
-	// D = k*A + B;
-	// D = B + k*A;
+	D = k*A + B; // das funktioniert noch
+	// D = B + k*A; // no match for ‘operator+’ in ‘B + operator*(double, Array<T>) [with T = double](A)’
 	//D = k*A + B + l*C;
 	D.print();
 }
