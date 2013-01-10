@@ -43,21 +43,6 @@ struct X<Left, Op, double, T> {
 	}
 };
 
-///*
-// * und für long (long ist präziser als double bei zahlen in
-// * der nähe von 2^63)
-// */
-//template <typename Op, typename Right, typename T>
-//struct X<long, Op, Right, T> {
-//	long m_left; Right m_right;
-//
-//	X(long t1, Right t2) : m_left(t1), m_right(t2) { }
-//
-//	T operator[](int i) {
-//		return Op::apply(m_left, m_right[i]);
-//	}
-//};
-
 
 template <typename T>
 struct Array {
@@ -66,12 +51,6 @@ struct Array {
 
 	// constructor
 	Array( T *data, int N) : m_data(data), m_N(N) { }
-
-	Array(T val) {
-		m_N = 1;
-		m_data = new T[m_N];
-		m_data[0] = val;
-	}
 
 	~Array() {
 		std::cout << "Destructor called" << std::endl;
