@@ -87,12 +87,10 @@ template <typename T> struct Minus {
 	}
 };
 
-template <typename T> class Mul {
-private: T scalar;
-public:
-	static T apply(T a, T b) { return a * b; }
-    Mul(T scalar) : scalar(scalar) {};
-    T operator[](int i) { return scalar; } // same value for every index!
+template <typename T> struct Mul {
+	static T apply(T a, T b) {
+		return a * b;
+	}
 };
 
 template <typename Left, typename T>
