@@ -63,11 +63,7 @@ struct Array {
 	}
 
 	T operator[] (int i) {
-		if (m_N == 1) {
-			return m_data[0];
-		} else {
-			return m_data[i];
-		}
+		return m_data[i];
 	}
 
 	void print() const {
