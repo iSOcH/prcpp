@@ -32,6 +32,17 @@ struct X<double, Op, Right, T> {
 	}
 };
 
+template <typename Left, typename Op, typename T>
+struct X<Left, Op, double, T> {
+	Left m_left; double m_right;
+
+	X(Left t1, double t2) : m_left(t1), m_right(t2) { }
+
+	T operator[](int i) {
+		return Op::apply(m_left[i], m_right);
+	}
+};
+
 ///*
 // * und für long (long ist präziser als double bei zahlen in
 // * der nähe von 2^63)
@@ -56,6 +67,12 @@ struct Array {
 	// constructor
 	Array( T *data, int N) : m_data(data), m_N(N) { }
 
+	Array(T val) {
+		m_N = 1;
+		m_data = new T[m_N];
+		m_data[0] = val;
+	}
+
 	~Array() {
 		std::cout << "Destructor called" << std::endl;
 	}
@@ -67,7 +84,11 @@ struct Array {
 	}
 
 	T operator[] (int i) {
-		return m_data[i];
+		if (m_N == 1) {
+			return m_data[0];
+		} else {
+			return m_data[i];
+		}
 	}
 
 	void print() const {
@@ -91,13 +112,12 @@ template <typename T> struct Minus {
 	}
 };
 
-template <typename T> struct Mul {
-//	static auto apply(double a, T b) -> decltype(a*b) {
-//		return a*b;
-//	}
-	static double apply(double a, T b) {
-		return a*b;
-	}
+template <typename T> class Mul {
+private: T scalar;
+public:
+	static T apply(T a, T b) { return a * b; }
+    Mul(T scalar) : scalar(scalar) {};
+    T operator[](int i) { return scalar; } // same value for every index!
 };
 
 template <typename Left, typename T>
@@ -105,12 +125,27 @@ X<Left, Plus<T>, Array<T>, T> operator+(Left a, Array<T> b) {
 	return X<Left, Plus<T>, Array<T>, T>(a,b);
 }
 
+template <typename Left, typename T, typename XL, typename XO, typename XR>
+X<Left, Plus<T>, X<XL,XO,XR,T>, T> operator+( Left a, X<XL,XO,XR,T> b) {
+    return X<Left, Plus<T>, X<XL,XO,XR,T>, T>(a,b);
+}
+
 template <typename Left, typename T>
 X<Left, Minus<T>, Array<T>, T> operator-(Left a, Array<T> b) {
 	return X<Left, Minus<T>, Array<T>, T>(a,b);
 }
 
+template <typename Left, typename T, typename XL, typename XO, typename XR>
+X<Left, Minus<T>, X<XL,XO,XR,T>, T> operator-(Left a, X<XL,XO,XR,T> b) {
+    return X<Left, Minus<T>, X<XL,XO,XR,T>, T>(a,b);
+}
+
 template <typename T>
 X<double, Mul<T>, Array<T>, T> operator*(double a, Array<T> b) {
 	return X<double, Mul<T>, Array<T>, T>(a,b);
+}
+
+template <typename T>
+X<Array<T>, Mul<T>, double, T> operator*(Array<T> a, double b) {
+	return X<Array<T>, Mul<T>, double, T>(a,b);
 }
