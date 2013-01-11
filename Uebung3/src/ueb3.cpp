@@ -7,6 +7,31 @@
 
 #include <iostream>
 
+template <typename T> struct Plus {
+	static T apply(T a, T b) {
+		return a+b;
+	}
+};
+
+template <typename T> struct Minus {
+	static T apply(T a, T b) {
+		return a-b;
+	}
+};
+
+template <typename T> struct Mul {
+	static T apply(T a, T b) {
+		return a * b;
+	}
+};
+
+template <typename T>
+struct ScalMul{
+	static T apply(const T &x, const T &y){
+		return x * y;
+	}
+};
+
 template <typename Left, typename Op, typename Right, typename T>
 struct X {
 	Left m_left; Right m_right;
@@ -18,9 +43,6 @@ struct X {
 	}
 };
 
-/*
- * einmal für double
- */
 template <typename Op, typename Right, typename T>
 struct X<double, Op, Right, T> {
 	double m_left; Right m_right;
@@ -43,7 +65,6 @@ struct X<Left, Op, double, T> {
 	}
 };
 
-
 template <typename T>
 struct Array {
 	T *m_data;
@@ -62,6 +83,16 @@ struct Array {
 		for (int i = 0; i < m_N; ++i) m_data[i] = expr[i];
 	}
 
+	template <typename Left,  typename Right>
+	void operator=(X<Left, ScalMul<T>, Right, T> expr){
+		T sum = 0;
+		for(int i = 0; i < m_N; ++i){
+			sum += expr[i];
+		}
+		m_N = 1;
+		m_data[0] = sum;
+	}
+
 	T operator[] (int i) {
 		return m_data[i];
 	}
@@ -75,23 +106,6 @@ struct Array {
 	}
 };
 
-template <typename T> struct Plus {
-	static T apply(T a, T b) {
-		return a+b;
-	}
-};
-
-template <typename T> struct Minus {
-	static T apply(T a, T b) {
-		return a-b;
-	}
-};
-
-template <typename T> struct Mul {
-	static T apply(T a, T b) {
-		return a * b;
-	}
-};
 
 template <typename Left, typename T>
 X<Left, Plus<T>, Array<T>, T> operator+(Left a, Array<T> b) {
@@ -122,3 +136,10 @@ template <typename T>
 X<Array<T>, Mul<T>, double, T> operator*(Array<T> a, double b) {
 	return X<Array<T>, Mul<T>, double, T>(a,b);
 }
+
+template <typename Left, typename T>
+X<Left, ScalMul<T>, Array<T>, T> operator^(Left a, Array<T> b){
+	return X<Left, ScalMul<T>, Array<T>, T>(a, b);
+}
+
+

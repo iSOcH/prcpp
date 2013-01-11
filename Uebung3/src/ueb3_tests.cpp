@@ -52,20 +52,22 @@ void second() {
 	D = A*k - B - C*l;
 	D.print();
 }
-//
-//void third() {
-//	double a_data[] = { 2, 3, 5, 9 };
-//	double b_data[] = { 1, 0, 0, 1 };
-//
-//	Array<double> A(a_data,4);
-//	Array<double> B(b_data,4);
-//
-//	Array<double> C = A**B;
-//	C.print();
-//}
+
+void third() {
+	double a_data[] = { 2, 3, 5, 9 };
+	double b_data[] = { 1, 0, 0, 1 };
+
+	Array<double> A(a_data,4);
+	Array<double> B(b_data,4);
+	Array<double> C(b_data,4);
+
+	C	= A ^ B;
+	C.print();
+}
 
 int main() {
 	first();
 	std::cout << "********************************************";
 	second();
+	third();
 }
