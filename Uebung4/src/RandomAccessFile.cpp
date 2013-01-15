@@ -20,7 +20,8 @@ RandomAccessFile::RandomAccessFile(const string& fileName) : m_fileName(fileName
 		// try to open file for reading and writing
 		m_file.open(fileName.c_str(), ios::in|ios::out|ios::binary);
 		if (!m_file) {
-			m_file.setf(ios::failbit);
+			// same as setf(ios::failbit) ?
+			m_file.fail();
 		}
 	}
 }
@@ -68,3 +69,10 @@ bool RandomAccessFile::truncate(streamsize length) {
 	return m_file.good();
 }
 
+template<class T> T RandomAccessFile::read(streampos pos) {
+	return 0;
+}
+
+template<class T> void RandomAccessFile::write(const T & data, streampos pos) {
+
+}
